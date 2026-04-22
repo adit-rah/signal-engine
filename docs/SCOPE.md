@@ -1,8 +1,20 @@
 # SCOPE.md
 
+## Purpose Of This Document
+
+This document defines what the system is in scope to do and what it is not.
+
+It is a scope document, not a design document. It addresses *what* is being built at a capability level. CONTEXT.md addresses *why* and *how the project thinks*.
+
+Where this document and CONTEXT.md overlap, CONTEXT.md is authoritative.
+
+---
+
 ## Project Overview
 
-This project aims to build a financial narrative intelligence system capable of ingesting financial and market-related textual information, identifying meaningful changes and patterns over time, and generating structured insights that may assist with investment research and trade thesis formation.
+The project is a **financial narrative intelligence system** that detects meaningful changes in meaning, confidence, framing, and consistency across time in financial text, using heuristic structure and learned representations combined through a fusion layer.
+
+The system ingests financial and market-related text sources, analyzes them in temporal and cross-source context, and produces **structured, explainable signals** that identify narrative changes worth human attention.
 
 The system is not intended to function as an autonomous trading system or a generic sentiment analyzer. Instead, the focus is on extracting higher-order signals from changes in language, narrative evolution, omissions, contradictions, confidence shifts, and cross-source inconsistencies.
 
@@ -10,7 +22,7 @@ The core objective is to reduce information overload and improve signal extracti
 
 ---
 
-# Core Problem Space
+## Core Problem Space
 
 Financial information is fragmented across multiple sources and distributed over time.
 
@@ -24,6 +36,8 @@ Users are expected to manually process:
 * analyst commentary
 * financial news
 * online discussion and sentiment platforms
+
+Many of these sources constitute the user's current information problem but are not v1 deliverables. See Scope Boundaries below for what v1 explicitly includes and what is deferred.
 
 Important signals are often subtle and difficult to detect manually, especially when they involve:
 
@@ -39,9 +53,24 @@ The project exists to identify and surface these changes in a structured and exp
 
 ---
 
-# Primary Goals
+## Architectural Commitments
 
-## Narrative Change Detection
+The following commitments are inherited from CONTEXT.md and shape the scope of what the system will build:
+
+* hybrid intelligence (heuristic layer + ML layer + fusion layer)
+* ML is a core subsystem, not optional
+* models are trained and owned in-house, not consumed as external APIs
+* model strategy favors small, specialized, lightweight models
+* signals must be traceable to source evidence
+* explainability is non-negotiable
+
+These commitments bound the scope of every functional area below.
+
+---
+
+## Primary Goals
+
+### Narrative Change Detection
 
 Detect meaningful changes in language, tone, framing, and strategic emphasis across time.
 
@@ -53,31 +82,25 @@ Examples:
 * reduced mention frequency of previously emphasized initiatives
 * sudden introduction of new concerns or risks
 
+This goal aligns with the canonical signal taxonomy defined in CONTEXT §4.
+
 ---
 
-## Contextual Financial Signal Extraction
+### Contextual Financial Signal Extraction
 
 Extract signals that may have relevance to investment analysis.
 
-Signals may include:
+The canonical signal taxonomy is defined in CONTEXT §4 and expected to be elaborated in SIGNAL_DEFINITIONS.md.
 
-* confidence shifts
-* uncertainty indicators
-* recurring risk patterns
-* strategic pivots
-* operational stress indicators
-* inconsistencies between statements and actions
-* changes in guidance framing
-
-The project should prioritize contextual understanding over simplistic positive/negative sentiment classification.
+The project prioritizes contextual understanding over simplistic positive/negative sentiment classification.
 
 ---
 
-## Temporal Analysis
+### Temporal Analysis
 
 Track how narratives evolve over time.
 
-The system should understand documents not as isolated inputs, but as part of an ongoing sequence.
+The system treats documents not as isolated inputs but as part of an ongoing sequence.
 
 Potential forms of temporal analysis include:
 
@@ -89,7 +112,7 @@ Potential forms of temporal analysis include:
 
 ---
 
-## Cross-Source Analysis
+### Cross-Source Analysis
 
 Compare narratives across different information sources.
 
@@ -104,13 +127,13 @@ The goal is to identify contradictions, inconsistencies, or hidden information a
 
 ---
 
-## Explainable Insight Generation
+### Explainable Insight Generation
 
-All surfaced insights should be understandable and traceable.
+All surfaced insights must be understandable and traceable.
 
-The system should prioritize explainability over opaque scoring systems.
+The system prioritizes explainability over opaque scoring systems.
 
-Outputs should clearly communicate:
+Outputs must clearly communicate:
 
 * what changed
 * why it may matter
@@ -119,9 +142,9 @@ Outputs should clearly communicate:
 
 ---
 
-# Data Domains
+## Data Domains
 
-The project may eventually support multiple financial and market-related data domains.
+The system is designed to eventually support multiple financial and market-related data domains.
 
 Potential domains include:
 
@@ -135,15 +158,21 @@ Potential domains include:
 * retail sentiment discussions
 * executive statements and interviews
 
-The system should be designed with extensibility in mind so that additional domains can be integrated later.
+### Initial Scope
+
+Initial scope is committed to **earnings call transcripts** (see CONTEXT §8).
+
+This is the only domain the v1 system is required to support. All other domains are deferred until signal quality is validated on the initial domain.
+
+The system is designed with extensibility in mind so that additional domains can be integrated later without restructuring.
 
 ---
 
-# Core Functional Areas
+## Core Functional Areas
 
-## Data Ingestion
+### Data Ingestion
 
-The system must support ingesting and organizing large volumes of financial text data.
+The system must support ingesting and organizing financial text data.
 
 Responsibilities include:
 
@@ -156,7 +185,7 @@ Responsibilities include:
 
 ---
 
-## Document Understanding
+### Document Understanding
 
 The system must interpret financial text in context.
 
@@ -171,7 +200,7 @@ This includes:
 
 ---
 
-## Narrative Tracking
+### Narrative Tracking
 
 The system must maintain continuity across time.
 
@@ -185,25 +214,25 @@ This includes:
 
 ---
 
-## Signal Detection
+### Signal Detection
 
 The system must identify potentially meaningful signals from textual and contextual patterns.
 
-Possible signal categories include:
+Signal categories align with CONTEXT §4:
 
-* confidence deterioration
-* uncertainty increases
-* contradiction emergence
-* omission detection
-* risk escalation
-* strategic redirection
-* abnormal communication patterns
+* narrative drift
+* confidence shift
+* omission event
+* contradiction event
+* structural anomaly
+
+The canonical set is defined in CONTEXT §4 and SIGNAL_DEFINITIONS.md. New signal types may be added over time.
 
 ---
 
-## Comparative Analysis
+### Comparative Analysis
 
-The system should compare information across:
+The system must compare information across:
 
 * time periods
 * document types
@@ -214,45 +243,41 @@ The system should compare information across:
 
 ---
 
-## Insight Presentation
+### Insight Presentation
 
-The system should provide outputs in a form that is actionable and understandable.
+The system must provide outputs in a form that is actionable and understandable.
 
 Potential output forms include:
 
 * structured summaries
 * change reports
 * narrative drift reports
-* contradiction alerts
-* signal dashboards
 * supporting evidence excerpts
 * confidence indicators
 
+Alerting, push notifications, and dashboard-style aggregated views are deferred; v1 is a **pull-based, depth-oriented** surface. Detailed presentation design is deferred to USER_EXPERIENCE.md.
+
 ---
 
-# Intelligence Concepts
+## Intelligence Concepts
 
-The following conceptual areas may become central to the system.
+The following conceptual areas underpin the system's analytical work.
 
-## Narrative Drift
+The canonical signal taxonomy lives in CONTEXT §4; the entries below describe the conceptual *capabilities* the system must support.
+
+### Narrative Drift
 
 Detect gradual changes in strategic communication or executive messaging.
 
----
-
-## Confidence Analysis
+### Confidence Analysis
 
 Identify changes in certainty, conviction, or hedging behavior.
 
----
-
-## Omission Detection
+### Omission Detection
 
 Identify important topics or themes that disappear over time.
 
----
-
-## Contradiction Analysis
+### Contradiction Analysis
 
 Detect inconsistencies between:
 
@@ -260,33 +285,21 @@ Detect inconsistencies between:
 * separate communication channels
 * stated goals and disclosed risks
 
----
-
-## Behavioral Communication Profiling
+### Behavioral Communication Profiling
 
 Understand baseline communication behavior for specific executives or organizations.
 
 The system may later identify deviations from established communication patterns.
 
----
-
-## Market-Relevant Signal Correlation
+### Market-Relevant Signal Correlation
 
 Explore relationships between narrative patterns and future market behavior.
 
-Potential relationships may include:
-
-* volatility changes
-* earnings surprises
-* sentiment reversals
-* drawdowns
-* trend continuation or breakdown
-
-This area should be treated carefully due to noise and uncertainty in financial markets.
+This area is treated as **exploratory** and is not a v1 deliverable. It is retained here to preserve awareness of the direction, not as a commitment.
 
 ---
 
-# User Experience Goals
+## User Experience Goals
 
 The system should help users:
 
@@ -299,41 +312,74 @@ The system should help users:
 
 The system should avoid overwhelming users with raw data or low-quality signals.
 
----
-
-# Design Principles
-
-## Context Over Raw Sentiment
-
-The project should prioritize contextual understanding rather than simplistic sentiment scoring.
+Detailed user experience design is deferred to USER_EXPERIENCE.md.
 
 ---
 
-## Temporal Awareness
+## Design Principles
+
+### Context Over Raw Sentiment
+
+The project prioritizes contextual understanding rather than simplistic sentiment scoring.
+
+### Temporal Awareness
 
 Meaning often emerges through change over time rather than isolated statements.
 
----
+### Explainability
 
-## Explainability
+Insights are inspectable and supported by evidence.
 
-Insights should be inspectable and supported by evidence.
+### Extensibility
 
----
+The architecture must allow future expansion into additional data sources, signal types, and analytical capabilities.
 
-## Extensibility
+### Human-Centered Analysis
 
-The architecture should allow future expansion into additional data sources and analytical capabilities.
+The system augments human analysis rather than replacing human judgment.
 
----
+### Model Ownership
 
-## Human-Centered Analysis
-
-The system should augment human analysis rather than replace human judgment.
+The system is built on models the project trains and operates itself, not on external LLM APIs in critical paths.
 
 ---
 
-# Non-Goals
+## Scope Boundaries
+
+### In Scope (v1)
+
+* ingestion of earnings call transcripts
+* entity identification and temporal document organization
+* heuristic and ML-based analysis of the five canonical signal types (narrative drift, confidence shift, omission event, contradiction event, structural anomaly)
+* a fusion engine that combines heuristic and ML outputs into ranked, traceable signals
+* structured, explainable signal outputs with evidence links
+* human-reviewable signal presentation (pull-based, entity-centric, single-user)
+* an evaluation harness sufficient for early-stage structured human review
+* a Signal lifecycle transition policy (Candidate, Surfaced, Stale, Superseded, Retired)
+* as-of reconstruction of historical narrative state, exposed both internally and externally
+
+### Deferred (v2+)
+
+* additional data domains (filings, news, press releases, interviews, macro, analyst commentary, public discourse)
+* real-time or streaming analysis
+* multi-modal inputs
+* portfolio-aware or personalized workflows
+* market-correlation studies
+* predictive signal experimentation
+* collaborative / multi-user research tooling
+* alerting, push notifications, and dashboard-style aggregated views
+
+### Deferred vs. Long-Term Expansion
+
+"Deferred" items are out of v1 but are **available for phase-gated entry** in subsequent versions once v1 signal quality is validated (see ROADMAP.md).
+
+"Long-Term Expansion Possibilities" (below) are **horizon-level** possibilities that are not yet on any phase gate.
+
+If an item appears in both lists, the Deferred entry is authoritative for phase-gating purposes.
+
+---
+
+## Non-Goals
 
 The project is not intended to:
 
@@ -342,29 +388,35 @@ The project is not intended to:
 * provide financial advice
 * operate as a simplistic sentiment classifier
 * generate unsupported predictions without evidence
+* depend on external LLM APIs in critical paths
+* produce entity-level aggregate scores (Signal Strength is type-relative; no cross-type or cross-entity aggregate is emitted)
+* claim completeness of coverage (absence of a Signal is never a claim of absence of risk)
+* provide alerting or dashboard-style aggregated views in v1
 
 ---
 
-# Open Questions
+## Open Questions
 
-The following areas remain intentionally undefined at this stage:
+The following areas remain intentionally undefined at this stage and are expected to be resolved during downstream architecture and research work:
 
-* exact technical architecture
-* model selection strategy
-* storage architecture
-* deployment strategy
-* real-time vs batch processing decisions
-* scoring methodologies
-* evaluation methodologies
-* user interaction model
-* signal ranking systems
-* data acquisition methods
+* specific training-data requirements to fine-tune the in-house representation model (tracked in RESEARCH_NOTES.md)
+* storage and deployment strategy (downstream infrastructure work)
 
-These areas should be explored after the project scope and conceptual direction are fully understood.
+### Questions Now Owned
+
+The following were open in earlier drafts and are now assigned to owner documents. They are listed here as pointers, not as open items.
+
+* signal ranking and prioritization methodology → NARRATIVE_ANALYSIS.md and EVALUATION.md
+* scoring methodologies within the fusion engine → MODEL_STRATEGY.md and NARRATIVE_ANALYSIS.md
+* user interaction model → USER_EXPERIENCE.md
+* data acquisition specifics for earnings call transcripts → DATA_ACQUISITION.md
+* specific model architecture selection → MODEL_STRATEGY.md (posture is in CONTEXT §6)
+* evaluation methodology beyond human review → EVALUATION.md
+* real-time vs. batch processing decisions → resolved to **deliberate / batch / on-demand** in ARCHITECTURE.md Operating Posture
 
 ---
 
-# Long-Term Expansion Possibilities
+## Long-Term Expansion Possibilities
 
 Potential future expansion areas may include:
 
