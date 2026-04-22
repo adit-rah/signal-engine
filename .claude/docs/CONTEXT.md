@@ -2,574 +2,352 @@
 
 ## Purpose Of This Document
 
-This document exists to preserve the conceptual reasoning, strategic direction, design philosophy, and architectural intent behind the project.
+This document defines the conceptual foundation, system philosophy, and architectural intent for a financial narrative intelligence system.
 
-This is not an implementation document.
+It is intended for architecture-level agents responsible for designing downstream system components (e.g. ARCHITECTURE.md, DATA_MODEL.md, SIGNAL_DEFINITIONS.md).
 
-This document is intended primarily for high-level planning and architecture-oriented agents, designers, researchers, or developers responsible for defining the system before implementation begins.
-
-The purpose of this document is to preserve continuity of thought across sessions and prevent future contributors from reconstructing foundational reasoning from scratch.
+This document prioritizes conceptual clarity over implementation detail.
 
 ---
 
-# Project Identity
+# 1. Project Identity
 
-## Working Description
+## Working Definition
 
-The project is a financial narrative intelligence system designed to identify meaningful changes, inconsistencies, emerging risks, and evolving narratives within financial and market-related text sources.
+The system is a **financial narrative intelligence system** that analyzes financial and market-related text to detect meaningful changes in meaning, framing, confidence, and consistency over time.
 
-The system is intended to process large quantities of textual financial information and surface higher-order signals that are difficult for humans to consistently identify manually.
+It is not a sentiment analyzer or trading prediction system.
 
-The project is fundamentally concerned with:
+Instead, it focuses on:
 
-* narrative evolution
-* temporal contextualization
-* communication pattern analysis
-* strategic language shifts
-* information asymmetry reduction
-* explainable signal extraction
-
-The project is not intended to function as a simplistic sentiment analysis engine or autonomous trading system.
+* narrative evolution over time
+* contextual meaning shifts
+* communication consistency and contradiction
+* omission and emergence of themes
+* latent structure in financial language
 
 ---
 
-# Core Thesis
+# 2. Core Thesis
 
-The central thesis behind the project is:
+Financial meaning is not primarily contained in isolated statements.
 
-> Important financial meaning often emerges through change over time rather than isolated statements.
+> Meaning emerges through *change over time* across narratives.
 
-Many existing systems treat documents independently.
+The system assumes that informational value is derived from:
 
-This project assumes that value emerges from:
+* temporal drift
+* comparative analysis
+* structural inconsistency
+* repeated narrative reinforcement or decay
+* disappearance of prior emphasis
 
-* comparison
-* historical context
-* narrative continuity
-* strategic drift
-* omission patterns
-* contradiction emergence
-* behavioral communication changes
-
-This assumption should heavily influence future architectural and analytical decisions.
+This temporal and comparative view is foundational.
 
 ---
 
-# Why This Project Exists
+# 3. System Philosophy
 
-Financial information environments are fragmented, dense, repetitive, and difficult to process consistently.
+## 3.1 Context Over Isolation
 
-Important information is distributed across:
+No document is interpreted independently. Every statement exists within a historical and cross-source context.
+
+---
+
+## 3.2 Hybrid Intelligence Model
+
+The system is explicitly **hybrid**, combining:
+
+### A. Structural / Heuristic Layer
+
+Defines what matters and ensures interpretability:
+
+* entity extraction
+* document segmentation
+* time alignment
+* rule-based comparisons
+* omission tracking logic
+* contradiction detection scaffolding
+
+### B. Machine Learning Layer
+
+Provides semantic richness and generalization:
+
+* embedding-based representation learning
+* narrative similarity and drift detection
+* probabilistic signal scoring
+* latent feature extraction from financial text
+* unsupervised pattern discovery
+
+### C. Fusion Layer
+
+Combines both to produce final signals:
+
+* integrates heuristic + ML outputs
+* resolves conflicts between structure and learned signals
+* ensures explainability and traceability
+
+👉 ML is a **core subsystem**, not optional, but it does not replace structural reasoning.
+
+---
+
+## 3.3 Explainability Requirement
+
+All outputs must be traceable to:
+
+* source text
+* structural rules (if applied)
+* ML-derived scores (if used)
+
+Black-box outputs without traceability are discouraged.
+
+---
+
+## 3.4 Structured Skepticism
+
+The system must avoid:
+
+* overconfident inference
+* causal claims from weak correlations
+* sentiment reductionism
+
+Financial language is inherently noisy.
+
+---
+
+# 4. Core Signal Philosophy
+
+A “signal” is not raw sentiment or prediction.
+
+A signal is:
+
+> a meaningful, explainable deviation or pattern in financial narrative structure over time
+
+## Signal types include:
+
+### Narrative Drift
+
+Gradual change in framing, emphasis, or strategic communication.
+
+### Confidence Shift
+
+Changes in certainty, hedging, or assertiveness.
+
+### Omission Event
+
+Disappearance of previously recurring themes or priorities.
+
+### Contradiction Event
+
+Inconsistency across time or sources.
+
+### Structural Anomaly
+
+Unusual deviation from established communication patterns.
+
+---
+
+# 5. ML Role Definition
+
+Machine learning is used to amplify signal detection, not define system truth.
+
+## ML Responsibilities:
+
+### 5.1 Representation Learning
+
+* semantic embeddings of financial text
+* cross-document similarity
+* narrative clustering
+
+### 5.2 Signal Enhancement
+
+* drift detection beyond heuristic thresholds
+* uncertainty modeling
+* latent structure detection
+
+### 5.3 Behavioral Modeling
+
+* communication pattern profiling
+* deviation detection from baseline behavior
+
+### 5.4 Optional Extensions
+
+* unsupervised discovery of emerging narrative themes
+
+## ML Constraints:
+
+* must remain explainable at signal level
+* must not act as sole decision-maker
+* must be grounded in structured inputs
+
+---
+
+# 6. Heuristic Role Definition
+
+Heuristics define system structure and constraints.
+
+They are responsible for:
+
+* defining what counts as a signal
+* enforcing consistency across time
+* anchoring ML outputs
+* providing baseline interpretability
+
+Heuristics are not secondary; they are **structural scaffolding** for ML.
+
+---
+
+# 7. Data Domains
+
+The system may process:
 
 * earnings call transcripts
-* filings
+* SEC filings
 * press releases
-* interviews
 * financial news
+* executive interviews
+* macroeconomic reports
 * analyst commentary
-* macroeconomic releases
-* public discussion spaces
+* public market discourse (optional future extension)
 
-Humans struggle to reliably identify:
-
-* subtle language shifts
-* gradual narrative evolution
-* recurring inconsistencies
-* disappearing strategic themes
-* cross-source contradictions
-* long-term communication drift
-
-Most retail-facing systems reduce complexity into shallow outputs such as:
-
-* bullish/bearish sentiment
-* summaries
-* alerts
-* keyword extraction
-
-The project exists because these approaches often discard contextual and temporal meaning.
+Initial scope should remain narrow to preserve signal quality.
 
 ---
 
-# Primary Differentiation Philosophy
+# 8. Intended Outputs
 
-The system should not attempt to compete as:
+The system produces **structured, explainable insights**, not raw predictions.
 
-* a generic chatbot
-* a simple summarizer
-* a basic sentiment classifier
-* a stock prediction oracle
+Outputs may include:
 
-Differentiation should emerge from contextual intelligence and temporal reasoning.
+* ranked signals
+* narrative change reports
+* contradiction summaries
+* omission alerts
+* confidence shift analysis
+* evidence-linked explanations
 
-Potential differentiation vectors include:
+## Output Format Philosophy
 
-* narrative drift analysis
-* omission tracking
-* contradiction detection
-* executive communication profiling
-* confidence deterioration analysis
-* cross-source comparison
-* strategic narrative evolution tracking
-
-The emphasis should remain on extracting meaningful informational deltas.
-
----
-
-# Core Conceptual Insight
-
-A major conceptual insight discussed during project ideation:
-
-> The delta between communications may matter more than the communication itself.
-
-Example:
-
-Quarter 1:
-
-* aggressive growth language
-
-Quarter 2:
-
-* measured growth language
-
-Quarter 3:
-
-* growth initiative disappears entirely
-
-The informational signal may emerge from the transition itself.
-
-This concept should remain foundational.
-
----
-
-# Important Definitions
-
-## Narrative Drift
-
-Gradual evolution of communication patterns, priorities, framing, or strategic emphasis across time.
-
----
-
-## Confidence Shift
-
-Changes in certainty, assertiveness, hedging behavior, or conviction within communications.
-
----
-
-## Omission Event
-
-The disappearance or significant reduction of previously recurring themes, initiatives, concerns, or strategic language.
-
----
-
-## Contradiction Event
-
-Meaningful inconsistency between:
-
-* past and present statements
-* different communication channels
-* stated priorities and disclosed risks
-
----
-
-## Communication Baseline
-
-A historical behavioral profile representing typical communication patterns for an entity or individual.
-
----
-
-## Signal
-
-A potentially meaningful observation extracted from patterns, changes, or inconsistencies in information.
-
-Signals are not assumed to be predictive by default.
-
----
-
-# System Philosophy
-
-## Context Over Isolation
-
-Documents should not be treated as independent artifacts.
-
-Meaning frequently depends on historical comparison and surrounding context.
-
----
-
-## Temporal Awareness
-
-Time-aware analysis is likely critical.
-
-The system should eventually reason across sequences rather than isolated snapshots.
-
----
-
-## Explainability Over Opaque Scoring
-
-The system should ideally expose:
+Outputs must include:
 
 * what changed
-* why it was flagged
-* what evidence supports the observation
+* where it changed
+* why it is considered meaningful
+* supporting evidence references
 
-Opaque scoring systems without explanation should be avoided where possible.
+## Output Type Assumption (CONFIRMED)
 
----
+The system uses a **hybrid output model**:
 
-## Human Augmentation
-
-The project should assist human reasoning rather than replace it.
-
-The system should help reduce cognitive overload and highlight potentially meaningful patterns.
-
----
-
-## Structured Skepticism
-
-The system should avoid presenting weak correlations or speculative interpretations as strong conclusions.
-
-Financial systems are noisy and ambiguous.
+* structured signals (ranked)
+* explanatory context
+* supporting excerpts
 
 ---
 
-# Intended User Profile
+# 9. System Boundaries
 
-Potential users may include:
+## Explicit Non-Goals
 
-* independent investors
-* retail traders
-* financial researchers
-* analysts
-* information-heavy decision makers
-* users overwhelmed by financial information volume
+The system is not intended to:
 
-The user is assumed to value:
-
-* insight density
-* explainability
-* contextual understanding
-* signal prioritization
-* information compression
+* predict stock prices directly
+* provide financial advice
+* function as an autonomous trading agent
+* reduce analysis to sentiment scoring
+* operate as a black-box prediction engine
 
 ---
 
-# Explicit Non-Goals
+# 10. Key Design Constraints
 
-The project should not currently aim to:
-
-* guarantee profitable investment outcomes
-* automate trading decisions
-* generate unsupported predictions
-* act as a black-box financial oracle
-* provide formal financial advice
-* replace human due diligence
-
-Avoid allowing project direction to drift into hype-oriented “AI predicts markets” framing.
+* temporal reasoning is mandatory
+* cross-document comparison is core
+* explainability is required
+* signals must be traceable
+* ML must augment, not obscure reasoning
+* heuristics must provide structural grounding
 
 ---
 
-# Observed Weaknesses In Existing Solutions
+# 11. Conceptual Architecture Direction
 
-During ideation, several weaknesses in existing systems were identified.
+The system will likely evolve around three layers:
 
-## Generic Sentiment Analysis
+## 11.1 Structural Layer
 
-Problem:
+Defines and organizes financial text data.
 
-* overly reductive
-* context-poor
-* weak differentiation
-* ignores temporal structure
+## 11.2 Semantic Layer (ML)
 
----
+Learns representations and latent patterns.
 
-## Isolated Document Analysis
+## 11.3 Signal Layer
 
-Problem:
-
-* ignores narrative evolution
-* fails to detect strategic drift
-* misses omissions and contradictions
+Produces interpretable financial narrative signals.
 
 ---
 
-## Retail Financial Tooling
+# 12. Key Risks
 
-Problem:
+## 12.1 Overfitting to Noise
 
-* often shallow
-* optimized for engagement rather than insight
-* lacks transparency
-* limited explainability
+Financial language is highly noisy; ML may detect patterns that are not meaningful.
 
----
+## 12.2 Overconfidence in Signals
 
-## Institutional Systems
+The system must avoid implying certainty where none exists.
 
-Observation:
+## 12.3 Model Drift Without Ground Truth
 
-* some advanced tooling likely exists internally within funds
-* inaccessible to retail users
-* opaque and proprietary
+Many signals are inherently subjective; evaluation is difficult.
 
-Potential opportunity:
+## 12.4 Loss of Interpretability
 
-* create transparent and inspectable intelligence tooling
+ML must not eliminate traceability of outputs.
 
 ---
 
-# Potential Analytical Domains
+# 13. Evaluation Philosophy
 
-The project may eventually involve analysis across:
+Success is not measured by prediction accuracy alone.
 
-* earnings calls
-* filings
-* press releases
-* executive interviews
-* financial news
-* analyst commentary
-* macroeconomic reports
-* public sentiment ecosystems
+Instead:
 
-However, scope discipline is important.
-
-Avoid attempting to ingest all domains simultaneously during early development.
+* usefulness of detected signals
+* clarity of explanations
+* consistency over time
+* reduction of human cognitive load
+* ability to surface non-obvious narrative changes
 
 ---
 
-# Architectural Philosophy Considerations
+# 14. Open Questions
 
-These are not decisions yet, but directional considerations.
-
-## Modular Analysis
-
-Different analytical capabilities may eventually need to remain separable.
-
-Examples:
-
-* contradiction analysis
-* omission tracking
-* confidence analysis
-* temporal comparison
+* What is the optimal definition of a “meaningful signal”?
+* How should signal importance be ranked?
+* What level of ML autonomy is appropriate per signal type?
+* How should uncertainty be communicated?
+* How should multi-source contradictions be resolved?
 
 ---
 
-## Extensibility
+# 15. Confirmed Assumptions
 
-New document types and analytical methods should be incorporable later.
-
----
-
-## Traceability
-
-Signals should ideally preserve traceable origins and supporting evidence.
-
----
-
-## Historical Reconstruction
-
-The system may eventually require strong historical reconstruction capabilities.
-
-Example:
-
-* understanding what a narrative looked like at a specific point in time
+* ML is a core subsystem, not optional
+* system is hybrid (heuristics + ML + fusion layer)
+* outputs are structured + explainable
+* sentiment analysis is insufficient as a primary model
+* temporal comparison is fundamental
+* system is exploratory, not purely predictive
 
 ---
 
-## Entity-Centric Organization
+# 16. Final Strategic Principle
 
-Long-term architecture may benefit from organizing information around entities:
+The system is best understood as:
 
-* companies
-* executives
-* industries
-* themes
+> a temporal narrative intelligence engine for financial text
 
-rather than isolated documents.
-
----
-
-# Potential Future Intelligence Directions
-
-Possible future exploration areas discussed:
-
-* executive behavioral communication profiling
-* industry-wide narrative shifts
-* macro narrative evolution
-* event-driven signal detection
-* market reaction correlation studies
-* long-term communication consistency scoring
-
-These are exploratory directions, not immediate requirements.
-
----
-
-# Important Strategic Risk
-
-One major risk:
-
-The project becoming a vague “AI finance platform” without a precise analytical identity.
-
-The project should remain grounded in a clearly defined conceptual edge.
-
-Current strongest conceptual edge:
-
-> contextual temporal narrative intelligence
-
-This should likely remain central unless strong evidence suggests otherwise.
-
----
-
-# Important Technical Risk
-
-A major risk is overcomplicating architecture before validating useful signal extraction.
-
-Avoid premature complexity.
-
-The system should not assume every problem requires advanced ML.
-
-Some useful signals may emerge from carefully designed heuristics and structured comparisons.
-
----
-
-# Important Product Risk
-
-Potential danger:
-
-Generating large volumes of low-quality or weakly meaningful signals.
-
-If signal quality is poor, users may lose trust quickly.
-
-Signal prioritization and explainability may become critically important.
-
----
-
-# Important Research Risk
-
-Many financial relationships are noisy and difficult to validate.
-
-Avoid conflating:
-
-* correlation
-* coincidence
-* causation
-
-The system should remain epistemically cautious.
-
----
-
-# Suggested Development Philosophy
-
-Early development should likely prioritize:
-
-* understanding the domain deeply
-* identifying genuinely useful signals
-* building reliable comparison mechanisms
-* validating analytical usefulness
-
-before pursuing predictive ambitions.
-
----
-
-# Open Questions
-
-The following remain intentionally unresolved.
-
-## Analytical Questions
-
-* Which signals are genuinely useful?
-* Which signals are noise?
-* How should importance be ranked?
-* What constitutes meaningful narrative change?
-
----
-
-## Structural Questions
-
-* What should be entity-centric vs document-centric?
-* How should historical state be represented?
-* How should relationships between statements be modeled?
-
----
-
-## Evaluation Questions
-
-* How should signal usefulness be measured?
-* How should false positives be evaluated?
-* What constitutes successful analysis?
-
----
-
-## UX Questions
-
-* How much information should be surfaced?
-* How should evidence be displayed?
-* How should confidence be communicated?
-
----
-
-## Scope Questions
-
-* Which data domains should be prioritized first?
-* What should remain out of scope initially?
-
----
-
-# Current Direction
-
-Current likely direction:
-
-Start narrow.
-
-Possible initial focus:
-
-* earnings call transcript comparison
-* temporal narrative comparison
-* confidence drift identification
-* omission detection
-* contradiction surfacing
-
-The current conceptual direction favors depth over breadth.
-
----
-
-# Current Project State
-
-At the current stage:
-
-* implementation decisions remain intentionally undefined
-* architecture is not finalized
-* pipeline design is not finalized
-* infrastructure choices are not finalized
-
-The current effort is focused on conceptual framing and scope definition.
-
----
-
-# Guidance For Future Architecture Documents
-
-Future architecture-oriented documents should preserve alignment with the following principles:
-
-* temporal reasoning matters
-* context matters more than isolated sentiment
-* explainability matters
-* signal quality matters more than signal quantity
-* architecture should remain extensible
-* avoid unnecessary complexity
-* preserve traceability
-* maintain conceptual coherence
-
-Architecture should emerge from the analytical philosophy rather than forcing the analytical philosophy into arbitrary infrastructure patterns.
-
----
-
-# Final Strategic Reminder
-
-The strongest version of this project is likely not:
-
-> “AI that predicts stocks”
-
-but rather:
-
-> a system that helps humans detect meaningful informational change within complex financial narratives
-
-This distinction is important and should remain preserved across future planning and implementation decisions.
+not a sentiment tool and not a trading bot.
