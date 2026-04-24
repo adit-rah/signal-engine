@@ -184,6 +184,71 @@ Each entry includes:
 
 ---
 
+### DL-2026-013 — FactSet CallStreet transcripts are classified Analytical-Only
+
+* **Status:** accepted
+* **Question:** Issuers on Q4 Inc.-hosted IR sites (notably NVIDIA) publish their official earnings-call transcripts as PDFs on their IR CDN. The transcript PDFs carry a `Copyright © FactSet CallStreet, LLC` footer and the underlying calls themselves state "The content of today's call is [Issuer]'s property. It can't be reproduced or transcribed without our prior written consent." What Licensing Posture applies?
+* **Alternatives considered:** **Training-Compatible** — the issuer chose to publish the PDF for all investors, arguably consenting to analytical-plus-derivative use, but the dual copyright (FactSet + issuer) makes this ambiguous; **Analytical-Only** — honors both the FactSet copyright and the issuer's reproduction-consent language while still enabling every v1 analytical capability; **Incompatible-Or-Ambiguous** — exclude these transcripts entirely (disproportionate to the risk).
+* **Decision:** FactSet CallStreet PDFs hosted on issuer IR CDNs are classified **Analytical-Only** for this project's Licensing Posture framework.
+* **Rationale:** The text is the core input for narrative-drift, confidence-shift, omission, and contradiction analysis — none of which require redistribution or foundation-model training. The Fusion Engine, heuristic modules, and the user surface operate on the text but do not reproduce it. Signal outputs cite Span references to source; they do not regurgitate transcript bodies. Under Analytical-Only, every Wave 1/2 capability remains reachable. Training of task-specific small classifiers on features derived from these transcripts is treated as a fair-use research activity consistent with the project's non-commercial research posture; training foundation-scale language models on them is out of scope regardless.
+* **Documents affected:** DATA_ACQUISITION.md (Licensing Posture classification), DOMAIN_GLOSSARY.md (Licensing Posture entry), MODEL_STRATEGY.md (which training uses are compatible with Analytical-Only inputs).
+* **Follow-ons:** If a company's transcripts are later found to be published under a clearly Training-Compatible license (e.g., CC-BY), it may be reclassified on a per-source basis. The Posture Carrying rule (DOMAIN_GLOSSARY) means derived artifacts inherit the most restrictive upstream posture — Analytical-Only propagates to every downstream artifact unless explicitly overridden.
+
+---
+
+### DL-2026-014a — Swap AMD → INTC for v1 corpus
+
+* **Status:** accepted (supersedes DL-2026-014 on AMD)
+* **Question:** AMD does not publish FactSet PDF transcripts on their IR CDN (59 PDFs on their page, 0 matching the transcript pattern across any reasonable filter). Should we invest in an audio (Pipeline B) path for AMD, or swap?
+* **Alternatives considered:** build Pipeline B for AMD (audio + ASR); swap to a ticker whose transcripts are already PDF-available.
+* **Decision:** Swap AMD out, INTC in. The v1 corpus is now **NVDA, INTC, META**.
+* **Rationale:**
+  - INTC preserves the "semi peer to NVDA" role AMD was meant to fill.
+  - INTC's current narrative arc (CEO turnover, foundry pivot, AI delays, capex dispute) is dense in exactly the phenomena the Signal Engine is designed to detect: Narrative Drift, Confidence Shift, Omission Events, Contradictions. It functions as a natural stress-test corpus — a working system should produce very different detector outputs for INTC than for NVDA.
+  - INTC is on a Q4 Inc. IR CDN, so the existing pdf/* pipeline works without new infrastructure.
+  - Deferring the audio pipeline investment remains consistent with "start narrow" (DL-2026-003) and the low-capital posture (DL-2026-002).
+* **Documents affected:** config/v1_companies.json, SCOPE.md implicit v1 corpus.
+* **Follow-ons:** If a direct AMD narrative becomes analytically necessary later, Pipeline B gets built for AMD as a deliberate investment under ROADMAP Phase 2.
+
+---
+
+### DL-2026-014 — V1 target companies: NVDA, AMD, META
+
+* **Status:** accepted
+* **Question:** Which companies constitute the v1 target corpus? "Start narrow" (DL-2026-003) commits us to a small set, but how small and which ones?
+* **Alternatives considered:** a single company (NVDA only — simpler but no cross-entity comparison); a broad set of 10+ (richer data but high per-company tooling overhead and increased odds of data-source failures in the first pass); a small, coherent set of 3–5 with deliberate narrative diversity.
+* **Decision:** The v1 corpus is **three companies: NVDA, AMD, META**. Tracked in `config/v1_companies.json`.
+* **Rationale:**
+  * All three have FactSet-style PDF transcripts on Q4 Inc. CDNs, so a single pipeline (`pdf/*`) handles them — no ASR investment required for v1.
+  * **NVDA + AMD** is a direct-competitor pair in a single sector (AI accelerators), which enables the cleanest possible cross-entity Narrative Drift and Confidence Shift comparisons in v1.
+  * **NVDA + META** is a supplier–customer pair (NVIDIA GPUs power Meta's AI infrastructure), which enables cross-entity analysis of related but role-differentiated narratives.
+  * **AMD + META** spans sectors (semis vs. consumer ads + AI capex), which adds narrative-style diversity without inflating the corpus.
+  * Three companies × ~16 quarters of history per company ≈ 48 transcripts, enough for meaningful Baselines per Entity without Thin-History Policy dominating, and small enough to debug acquisition and normalization issues quickly.
+* **Documents affected:** SCOPE.md (In Scope, v1), DATA_ACQUISITION.md (target sources), ROADMAP.md (Phase 1 exit criteria include v1 corpus populated).
+* **Follow-ons:** Additional companies are added by extending `config/v1_companies.json` and re-running `v1_ingest.py`. A company is added to v1 only when its transcripts are confirmed accessible (FactSet PDF path) or a non-PDF ingestion pathway (ASR) is in place. Target expansion under ROADMAP Phase 2 is deliberately judgment-driven rather than threshold-driven.
+
+---
+
+### DL-2026-015 — V1 analysis layer ships heuristic-only Fusion Engine
+
+* **Status:** accepted
+* **Question:** What does the analysis layer of V1 actually contain on initial release?
+* **Alternatives considered:**
+  * Heuristic-only V1 (no ML, just rule-based feature extraction + statistical baselines + threshold detection); add ML layer in a later phase.
+  * Heuristic + thin ML layer at V1 (small embedding model for narrative similarity, used for Narrative Drift and Contradiction Event detection).
+  * Wait until the ML layer is fully designed and trained before shipping any analysis.
+* **Decision:** V1 analysis layer is **heuristic-only**. The Fusion Engine v0 takes only heuristic contributions. The ML layer is explicitly deferred.
+* **Rationale:**
+  * Consistent with CONTEXT.md §6.4 ("Complexity is justified only when it produces measurably better signals than simpler alternatives") and the Restraint Beats Coverage principle in VISION.md.
+  * Heuristic Confidence Shift (hedge-density z-score), Structural Anomaly (transcript-shape z-scores), Narrative Drift (theme distribution), and Omission Event (recurrence-then-absence) are all implementable without learned representations and produce meaningful Signals against the existing corpus.
+  * Contradiction Event remains a stub in V1 because it genuinely requires semantic comparison; it is the only one of the five canonical Signal types that does. It will be added when the ML layer ships.
+  * Shipping heuristic-first lets us validate the whole pipeline (features → baselines → Fusion Engine → Signal Store → review surface) end to end before adding model-strategy complexity.
+  * The Fusion Engine's design contract (Basis with both heuristic and learned contributions, Basis Disagreement) is preserved in code; the learned slot is empty in V1 and will be populated when MODEL_STRATEGY.md is implemented.
+* **Documents affected:** SCOPE.md V1 In Scope (matches), MODEL_STRATEGY.md (defers ML layer to a subsequent phase), SIGNAL_DEFINITIONS.md (Contradiction Event is documented but not yet detectable).
+* **Follow-ons:** Phase 1.5 / Phase 2 work introduces a small embedding model for cross-Document semantic comparison and adds Contradiction Event detection plus a learned-side Basis contribution. Until then, Contradiction Event remains a documented but undetected Signal type, which the Evaluation Harness should make visible to reviewers.
+
+---
+
 ## Pending Cross-Document Coordination
 
 The following are tensions flagged across Wave 2 clusters that affect multiple documents. They are not yet resolved as decisions but are tracked so they do not get lost.

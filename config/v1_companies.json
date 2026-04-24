@@ -1,0 +1,31 @@
+{
+  "_comment": [
+    "v1 target companies for the Signal Engine.",
+    "See .claude/docs/DECISION_LOG.md DL-2026-014 for the picky selection rationale.",
+    "Each entry needs: ticker, cik (for SEC), ir_quarterly_url (for transcript discovery),",
+    "and a short narrative_profile for documentation / cross-referencing.",
+    "To add a ticker, verify it has FactSet-style PDF transcripts on a Q4 Inc. CDN",
+    "by manually visiting its IR quarterly-results page; if unsure, fall back to the",
+    "audio pipeline (bin/scripts/audio/*)."
+  ],
+  "companies": [
+    {
+      "ticker": "NVDA",
+      "cik": "1045810",
+      "ir_quarterly_url": "https://investor.nvidia.com/financial-info/quarterly-results/default.aspx",
+      "narrative_profile": "AI accelerator leader; dense analyst Q&A; China regulatory exposure; Blackwell ramp narrative."
+    },
+    {
+      "ticker": "INTC",
+      "cik": "50863",
+      "ir_quarterly_url": "https://www.intc.com/financial-info/quarterly-results/default.aspx",
+      "narrative_profile": "Semi peer to NVDA under sustained strategic pressure: CEO turnover, foundry pivot, AI product delays, capex dispute, multiple quarters of distinct narrative reframing — a rich source of Narrative Drift, Omission Events, and Confidence Shifts."
+    },
+    {
+      "ticker": "META",
+      "cik": "1326801",
+      "ir_quarterly_url": "https://investor.atmeta.com/financials/default.aspx",
+      "narrative_profile": "AI capex pivot; Reality Labs losses; advertising cyclicality; Zuckerberg capital-allocation narrative."
+    }
+  ]
+}
