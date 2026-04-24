@@ -1,1 +1,49 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
 
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Project data — never commit (see DATA_GOVERNANCE.md)
+data/
+*.mp3
+*.m4a
+*.wav
+*.opus
+*.flac
+*.mp4
+*.webm
+
+# Secrets and tokens
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+hf_token*
+.huggingface/
+
+# Logs and scratch
+*.log
+logs/
+scratch/
+tmp/
