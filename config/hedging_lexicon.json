@@ -1,0 +1,31 @@
+{
+  "_comment": [
+    "Lexicons for confidence analysis. Hedges reduce certainty; boosters raise it.",
+    "Certainty score for a text segment = booster_count - hedge_count, normalized by length.",
+    "Word boundaries are checked at application time, so plural / conjugation variants",
+    "that the simple matcher misses can be added here explicitly.",
+    "This list is intentionally modest — quality of detection matters more than volume."
+  ],
+  "hedges": [
+    "might", "maybe", "perhaps", "possibly", "probably", "potentially",
+    "could", "would", "should", "may",
+    "somewhat", "rather", "fairly", "roughly", "approximately", "around", "about",
+    "likely", "unlikely", "anticipated", "expected", "hopefully",
+    "some", "several", "few", "many", "most",
+    "seems", "appears", "tends", "tend", "we believe", "i believe", "we think", "i think",
+    "difficult to say", "hard to predict", "unclear whether", "not yet",
+    "subject to", "depending on", "contingent on", "conditional",
+    "i'd say", "we'd say", "arguably", "in a sense", "in some ways", "to some extent",
+    "look", "sort of", "kind of",
+    "we'll see", "time will tell", "too early"
+  ],
+  "boosters": [
+    "definitely", "certainly", "absolutely", "clearly", "obviously", "undoubtedly",
+    "indeed", "of course", "naturally", "essentially", "fundamentally",
+    "proven", "demonstrated", "established", "confirmed", "guaranteed",
+    "always", "never", "every", "all of", "none of",
+    "tremendous", "tremendously", "massive", "massively", "enormous", "enormously",
+    "extraordinary", "record", "record-breaking", "unprecedented",
+    "committed", "committed to", "determined", "confident"
+  ]
+}

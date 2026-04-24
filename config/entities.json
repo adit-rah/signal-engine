@@ -1,0 +1,48 @@
+{
+  "_comment": [
+    "Canonical Entity + Speaker registry per DATA_MODEL.md.",
+    "Canonical IDs are stable across the system. Ticker, CIK, speaker-role,",
+    "and name variants are all recorded so we can resolve messy upstream inputs."
+  ],
+  "entities": [
+    {
+      "canonical_id": "nvda",
+      "ticker": "NVDA",
+      "name": "NVIDIA Corporation",
+      "cik": "1045810",
+      "fiscal_year_end_month": 1,
+      "speakers": [
+        {"canonical_id": "nvda_huang_jensen", "role": "CEO", "name_variants": ["Jensen Huang", "Jen Hsun Huang", "Jen-Hsun Huang"]},
+        {"canonical_id": "nvda_kress_colette", "role": "CFO", "name_variants": ["Colette Kress", "Colette M. Kress"]},
+        {"canonical_id": "nvda_hari_toshiya", "role": "IR", "name_variants": ["Toshiya Hari"]},
+        {"canonical_id": "nvda_jankowski_simona", "role": "IR", "name_variants": ["Simona Jankowski"]}
+      ]
+    },
+    {
+      "canonical_id": "intc",
+      "ticker": "INTC",
+      "name": "Intel Corporation",
+      "cik": "50863",
+      "fiscal_year_end_month": 12,
+      "speakers": [
+        {"canonical_id": "intc_tan_lipbu", "role": "CEO", "name_variants": ["Lip-Bu Tan", "Lip Bu Tan"]},
+        {"canonical_id": "intc_gelsinger_pat", "role": "CEO", "name_variants": ["Pat Gelsinger", "Patrick Gelsinger"]},
+        {"canonical_id": "intc_zinsner_david", "role": "CFO", "name_variants": ["David Zinsner", "Dave Zinsner"]},
+        {"canonical_id": "intc_holthaus_michelle", "role": "Exec", "name_variants": ["Michelle Johnston Holthaus", "Michelle Holthaus"]}
+      ]
+    },
+    {
+      "canonical_id": "meta",
+      "ticker": "META",
+      "name": "Meta Platforms, Inc.",
+      "cik": "1326801",
+      "fiscal_year_end_month": 12,
+      "speakers": [
+        {"canonical_id": "meta_zuckerberg_mark", "role": "CEO", "name_variants": ["Mark Zuckerberg"]},
+        {"canonical_id": "meta_li_susan", "role": "CFO", "name_variants": ["Susan Li"]},
+        {"canonical_id": "meta_wehner_dave", "role": "CFO", "name_variants": ["David Wehner", "Dave Wehner"]},
+        {"canonical_id": "meta_sandberg_sheryl", "role": "COO", "name_variants": ["Sheryl Sandberg"]}
+      ]
+    }
+  ]
+}

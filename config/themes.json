@@ -1,0 +1,58 @@
+{
+  "_comment": [
+    "Per-entity theme keyword tracking. Each theme has a list of surface forms.",
+    "A theme is 'present' in a document if any surface form appears above a minimum count.",
+    "Used for Narrative Drift (distribution shift) and Omission Event (expected-but-absent).",
+    "Keyword lists are intentionally focused — a small number of high-signal terms per theme",
+    "beats a long list of noisy ones. This config grows with investigator knowledge."
+  ],
+  "entities": {
+    "nvda": {
+      "themes": {
+        "blackwell": ["blackwell", "b100", "b200", "gb200", "gb300", "nvl72"],
+        "hopper": ["hopper", "h100", "h200"],
+        "ada_lovelace": ["ada lovelace", "ada", "rtx"],
+        "data_center": ["data center", "datacenter", "hyperscaler", "cloud"],
+        "inference": ["inference", "token generation", "reasoning model"],
+        "training": ["training", "pretraining", "fine-tuning"],
+        "cuda": ["cuda", "nvlink"],
+        "china_export": ["china", "export control", "h20", "b20"],
+        "sovereign_ai": ["sovereign ai", "sovereign", "ai factory"],
+        "gaming": ["gaming", "gamer", "geforce", "rtx 50"],
+        "automotive": ["automotive", "drive", "orin"],
+        "robotics": ["robotics", "isaac", "jetson"]
+      }
+    },
+    "intc": {
+      "themes": {
+        "foundry": ["foundry", "ifs", "intel foundry"],
+        "18a": ["18a", "intel 18a", "18 angstrom"],
+        "intel_3": ["intel 3", "intel 4", "intel 7"],
+        "gaudi": ["gaudi", "habana"],
+        "xeon": ["xeon", "sapphire rapids", "emerald rapids", "granite rapids"],
+        "client_pc": ["client", "core ultra", "lunar lake", "arrow lake", "meteor lake"],
+        "ai_pc": ["ai pc", "npu"],
+        "margins": ["gross margin", "operating margin", "margin"],
+        "dividend": ["dividend"],
+        "chips_act": ["chips act", "u.s. manufacturing"],
+        "turnaround": ["turnaround", "transformation", "repositioning"],
+        "capex": ["capex", "capital expenditure"]
+      }
+    },
+    "meta": {
+      "themes": {
+        "ai_capex": ["ai infrastructure", "ai capex", "ai spending", "compute spending"],
+        "llama": ["llama", "open source ai", "open weights"],
+        "reality_labs": ["reality labs", "quest", "ray-ban", "orion", "metaverse"],
+        "efficiency": ["efficiency", "year of efficiency", "operating efficiency"],
+        "reels": ["reels"],
+        "threads": ["threads"],
+        "advertising": ["ad revenue", "advertising", "ads", "impressions"],
+        "family_of_apps": ["family of apps", "foa"],
+        "dalr": ["daily active people", "daily active users", "dap", "dau"],
+        "regulation": ["regulation", "regulatory", "gdpr", "dma", "ftc", "antitrust"],
+        "china": ["china"]
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+[project]
+name = "signal-engine"
+version = "0.1.0"
+description = "Heuristic-only V1 of the financial narrative intelligence system (see .claude/docs/CONTEXT.md)."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "beautifulsoup4>=4.14.3",
+    "playwright>=1.58.0",
+    "pymupdf>=1.27.2.2",
+    "requests>=2.33.1",
+    "sec-edgar-downloader>=5.1.0",
+    "whisperx>=3.8.5",
+    "yt-dlp>=2026.3.17",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[project.scripts]
+signal-engine-ingest = "signal_engine.cli.v1_ingest:main"
+signal-engine-analyze = "signal_engine.cli.analyze:main"
+signal-engine-review = "signal_engine.cli.review:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/signal_engine"]
